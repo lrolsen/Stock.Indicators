@@ -24,7 +24,7 @@ namespace StockIndicators.Tests
             Assert.IsFalse(h.Where(x => x.Index == null || x.Index <= 0).Any());
 
             // last index should be 502
-            Quote r = history.Where(x => x.Date == DateTime.Parse("12/31/2018")).FirstOrDefault();
+            Quote r = history.Where(x => x.Date == DateTime.ParseExact("12/31/2018", "MM/dd/yyyy", null)).FirstOrDefault();
             Assert.AreEqual(502, r.Index);
         }
 
@@ -43,7 +43,11 @@ namespace StockIndicators.Tests
             foreach (BasicData x in c) { x.Index = null; }
 
             // re-clean index
+            o = Cleaners.PrepareBasicData(o);
+            h = Cleaners.PrepareBasicData(h);
+            l = Cleaners.PrepareBasicData(l);
             c = Cleaners.PrepareBasicData(c);
+            v = Cleaners.PrepareBasicData(v);
 
             // assertions
 
@@ -55,7 +59,7 @@ namespace StockIndicators.Tests
 
             // samples
             BasicData ro = o.Where(x => x.Index == 502).FirstOrDefault();
-            BasicData rc = c.Where(x => x.Date == DateTime.Parse("12/31/2018")).FirstOrDefault();
+            BasicData rc = c.Where(x => x.Date == DateTime.ParseExact("12/31/2018", "MM/dd/yyyy", null)).FirstOrDefault();
             BasicData rh = h.Where(x => x.Index == 502).FirstOrDefault();
             BasicData rl = l.Where(x => x.Index == 502).FirstOrDefault();
             BasicData rv = v.Where(x => x.Index == 502).FirstOrDefault();
